@@ -2193,36 +2193,8 @@ static void AddAddress(char buf[], S9xCheatDataSize bytes) {
 	}
 }
 
-static void CopyRAM() {
-	if(watches[0].on)
-	{
-		// copy the memory used by each active watch
-		for(unsigned int i = 0 ; i < sizeof(watches)/sizeof(*watches) ; i++)
-		{
-			if(watches[i].on)
-			{
-				int address = watches[i].address - 0x7E0000;
-				const uint8* source;
-				if(address < 0x20000)
-					source = Memory.RAM + address ;
-				else if(address < 0x30000)
-					source = Memory.SRAM + address  - 0x20000;
-				else
-					source = Memory.FillRAM + address  - 0x30000;
-	
-				memcpy(Cheat.CWatchRAM + address, source, watches[i].size);
-			}
-		}
-	}
-}
-
 static void DisplayWatchedAddresses (void)
 {
-	// watches[0].on = true;
-	// watches[0].address = 0x7E0575;
-	// watches[0].format = 2;
-	// watches[0].size = 2;
-	CopyRAM();
 	char add1[] = "7E00BE";
 	AddAddress(add1, S9X_16_BITS);
 	char add2[] = "7E0575";
@@ -2235,9 +2207,10 @@ static void DisplayWatchedAddresses (void)
 
 		int32	displayNumber = 0;
 		char	buf[32];
-
-		for (int r = 0; r < watches[i].size; r++)
-			displayNumber += (Cheat.CWatchRAM[(watches[i].address - 0x7E0000) + r]) << (8 * r);
+		
+		int address = watches[i].address - 0x7E0000;
+		const uint8* source = Memory.RAM + address;
+		memcpy(&displayNumber, source, watches[i].size);
 
 		if (watches[i].format == 1)
 			sprintf(buf, "%s,%du = %u", watches[i].desc, watches[i].size, (unsigned int) displayNumber);
