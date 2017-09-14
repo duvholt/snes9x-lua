@@ -29,7 +29,7 @@ endif
 CCC        = @CXX@
 CC         = @CC@
 GASM       = @CXX@
-INCLUDES   = -I. -I.. -I../apu/ -I../apu/bapu -I../unzip/ -I../jma/ -I../filter/ -Ilua-5.1.5/src/
+INCLUDES   = -I. -I.. -I../apu/ -I../apu/bapu -I../unzip/ -I../jma/ -I../filter/ -I../lua/src/
 
 CCFLAGS    = @S9XFLGS@ @S9XDEFS@ $(DEFS)
 CFLAGS     = $(CCFLAGS)

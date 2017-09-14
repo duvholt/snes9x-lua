@@ -4757,7 +4757,7 @@ fi
 if test "x$enable_lua" = "xyes"; then
 	if test "x$snes9x_cv_liblua" = "xyes"; then
 		S9XDEFS="$S9XDEFS -DHAVE_LUA"
-		S9XLIBS="$S9XLIBS -llua"
+		S9XLIBS="$S9XLIBS -llua5.1"
 	else
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: liblua not found. Build without lua support." >&5
 $as_echo "$as_me: WARNING: liblua not found. Build without lua support." >&2;}

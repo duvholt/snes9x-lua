@@ -1860,9 +1860,9 @@ int main (int argc, char **argv)
 	
         OpenLuaContext(context, PrintToWindowConsole, OnStart, OnStop);
         RunLuaScriptFile(context, "test.lua");
-	CloseLuaContext(context);
+	// CloseLuaContext(context);
 
-	return (0);
+	// return (0);
 
 	while (1)
 	{
