@@ -2162,11 +2162,9 @@ static void AddAddress(char buf[], S9xCheatDataSize bytes) {
 
 		unsigned int i;
 		for(i = 0 ; i < sizeof(watches)/sizeof(*watches) ; i++) {
-			printf("add %6X\n", watches[i].address);
 			if(!watches[i].on || watches[i].address == address)
 				break;
 		}
-		printf("%d\n", i);
 		if(i >= sizeof(watches)/sizeof(*watches))
 			i = (unsigned int)(sizeof(watches)/sizeof(*watches)-1);
 		watches[i].on = true;

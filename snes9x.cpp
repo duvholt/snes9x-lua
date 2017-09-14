@@ -413,7 +413,7 @@ void S9xLoadConfigFiles (char **argv, int argc)
 	Settings.Transparency               =  conf.GetBool("Display::Transparency",               true);
 	Settings.DisableGraphicWindows      = !conf.GetBool("Display::GraphicWindows",             true);
 	Settings.DisplayFrameRate           =  conf.GetBool("Display::DisplayFrameRate",           true);
-	Settings.DisplayWatchedAddresses    =  conf.GetBool("Display::DisplayWatchedAddresses",    true);
+	Settings.DisplayWatchedAddresses    =  conf.GetBool("Display::DisplayWatchedAddresses",    false);
 	Settings.DisplayPressedKeys         =  conf.GetBool("Display::DisplayInput",               false);
 	Settings.DisplayMovieFrame          =  conf.GetBool("Display::DisplayFrameCount",          false);
 	Settings.DisplayLagFrame            =  conf.GetBool("Display::DisplayLagFrameCount",       false);

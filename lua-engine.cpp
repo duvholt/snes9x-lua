@@ -4944,7 +4944,7 @@ void registerLibs(lua_State* L)
 	lua_register(L, "tostring", tostring);
 	lua_register(L, "addressof", addressof);
 	lua_register(L, "copytable", copytable);
-
+	
 	// old bit operation functions
 	lua_register(L, "AND", bit_band);
 	lua_register(L, "OR", bit_bor);
