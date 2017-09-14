@@ -2154,8 +2154,80 @@ static void DisplayPressedKeys (void)
 	}
 }
 
+static void AddAddress(char buf[], S9xCheatDataSize bytes) {
+	uint32 address = (uint32)strtol(buf, NULL, 16);
+	int val_type = 2;
+	{
+		memset(buf, 0, sizeof(char) * 7);
+
+		unsigned int i;
+		for(i = 0 ; i < sizeof(watches)/sizeof(*watches) ; i++) {
+			printf("add %6X\n", watches[i].address);
+			if(!watches[i].on || watches[i].address == address)
+				break;
+		}
+		printf("%d\n", i);
+		if(i >= sizeof(watches)/sizeof(*watches))
+			i = (unsigned int)(sizeof(watches)/sizeof(*watches)-1);
+		watches[i].on = true;
+
+		// account for size
+		if(bytes==S9X_8_BITS)
+			watches[i].size=1;
+		else if (bytes==S9X_16_BITS)
+			watches[i].size=2;
+		else if (bytes==S9X_24_BITS)
+			watches[i].size=3;
+		else if (bytes==S9X_32_BITS)
+			watches[i].size=4;
+
+		watches[i].format=val_type;
+		watches[i].address=address;
+		strncpy(watches[i].buf, buf, 12);
+		if(address < 0x7E0000 + 0x20000)
+			sprintf(watches[i].desc, "%6X", address);
+		else if(address < 0x7E0000 + 0x30000)
+			sprintf(watches[i].desc, "s%05X", address - 0x7E0000 - 0x20000);
+		else
+			sprintf(watches[i].desc, "i%05X", address - 0x7E0000 - 0x30000);
+	}
+}
+
+static void CopyRAM() {
+	if(watches[0].on)
+	{
+		// copy the memory used by each active watch
+		for(unsigned int i = 0 ; i < sizeof(watches)/sizeof(*watches) ; i++)
+		{
+			if(watches[i].on)
+			{
+				int address = watches[i].address - 0x7E0000;
+				const uint8* source;
+				if(address < 0x20000)
+					source = Memory.RAM + address ;
+				else if(address < 0x30000)
+					source = Memory.SRAM + address  - 0x20000;
+				else
+					source = Memory.FillRAM + address  - 0x30000;
+	
+				memcpy(Cheat.CWatchRAM + address, source, watches[i].size);
+			}
+		}
+	}
+}
+
 static void DisplayWatchedAddresses (void)
 {
+	// watches[0].on = true;
+	// watches[0].address = 0x7E0575;
+	// watches[0].format = 2;
+	// watches[0].size = 2;
+	CopyRAM();
+	char add1[] = "7E00BE";
+	AddAddress(add1, S9X_16_BITS);
+	char add2[] = "7E0575";
+	AddAddress(add2, S9X_16_BITS);
+
 	for (unsigned int i = 0; i < sizeof(watches) / sizeof(watches[0]); i++)
 	{
 		if (!watches[i].on)
